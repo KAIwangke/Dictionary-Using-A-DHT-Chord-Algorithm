@@ -1,7 +1,7 @@
 from msilib.schema import Class
 
 
-class ClientNode{
+class Client{
 
     def readwords{
 
