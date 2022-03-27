@@ -17,7 +17,8 @@ Every time a node wants to look up a key [k], it will pass the query to the clos
 With such a finger table, the number of nodes that must be contacted to find a successor in an *N*-node network is  [O(\log N)]. 
 
 If two nodes are at a distance 11 apart along the ring (i.e., there are 10 nodes between them), it takes three hops to send a message from one to the other. The first hop covers a distance of 8 units, the second 2 units, and the final hop 1 unit.
-(https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Chord_route.png/250px-Chord_route.png)](https://en.wikipedia.org/wiki/File:Chord_route.png)
+<img width="810" alt="image" src="https://user-images.githubusercontent.com/46043861/160290600-7ea6c617-f6d1-4291-8148-8abf059bd3d3.png">
+
 
 The routing path between nodes A and B. Each hop cuts the remaining distance in half (or better).
 
