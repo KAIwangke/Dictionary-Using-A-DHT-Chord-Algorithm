@@ -15,18 +15,22 @@ class SuperNode{
 
     }
 
-	def finishJoining(int id){
-        
+
+# needed calls to the suppernode ==============================
+    def GetNodeForJoin_actual(IP,Port){
+        # getNodeInfo(String ipAddr, String port)
 
 
     }
 
-	def getNodeInfo(String ipAddr, String port){
-
-
-
+    def PostJoin_actual(){
+        # def finishJoining(int id)
     }
 
+
+    def GetNodeForClient_actual(){
+
+    }
 
 }
 
@@ -41,11 +45,7 @@ class Node{
 }
 
 
-
-
-
-
-
-
 if __name__ == '__main__':
+    # connection between the supernode and the client interface
+
 

@@ -6,6 +6,23 @@ class Client{
     def readwords{
 
     }
+
+    def printAllNodes{
+
+    }
+# ======================================== calling SuperNode
+
+    def GetNodeForJoin(IP,port){
+        # contact supernode for before join
+    }
+    def PostJoin{
+
+    }
+    def GetNodeForClient{
+
+
+    }
+# ======================================== calling Node directly
     def get_DHT{
 
     }
@@ -13,16 +30,11 @@ class Client{
 
     }
     def UpdateDHT{
-
+            # PostJoin().
     }
 
-    def getEachNode{
 
-    }
-    
-    def printAllNodes{
-
-    }
 }
 
 if __name__ == '__main__':
+    # connection between the supernode and the client interface

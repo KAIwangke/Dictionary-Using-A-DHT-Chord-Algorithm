@@ -1,6 +1,7 @@
 import random
 
 k = 5
+# Assume the 
 MAX = 2**k
 
 class NodeHDT{
@@ -78,6 +79,7 @@ class Node{
             return self.predecessor
         n1 = self
         while not betweenE(id,n1.id,n1.successor().id):
+
             n1 = n1.closest_preceding_finger(id)
         return n1
     
