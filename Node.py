@@ -1,7 +1,7 @@
 import random
 
-k = 5
-# Assume the 
+k = 9
+# Assume the Number of the nodes are 9
 MAX = 2**k
 
 class NodeHDT{
