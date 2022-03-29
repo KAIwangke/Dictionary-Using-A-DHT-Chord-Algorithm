@@ -1,5 +1,7 @@
 import numbers
+from operator import truediv
 import random
+from statistics import mean
 
 
 
@@ -17,8 +19,7 @@ MAX = 2**k
 import random
 import hashlib
 
-k = 6
-MAX = 2**k
+
 
 class pos:
     def decr(value,size):
@@ -56,6 +57,7 @@ class Node:
         self.id = id
         self.finger = {}
         self.start = {}
+        self.wordlist = {}
         for i in range(k):
             self.start[i] = (self.id+(2**i)) % (2**k)
 
@@ -132,6 +134,11 @@ class Node:
     def setSuccessor(self,succ):
         self.finger[0] = succ
     
+    def put(self,word,meaning):
+        self.wordlist[word] = meaning
+
+    def get(self,word):
+        return self.wordlist[word]
 
     # def stabilization()
         # 1. node x join and Id is between xp and xs
@@ -144,11 +151,33 @@ class Node:
 
 
 
+class HASHING:
+    def hash(IP,port):
+        message = IP + port
+        message = message.encode()
+        # then sending to md5()
+        result = hashlib.md5(message.encode())
+        print("this is the result for the md5")
+        print(result)
+        # printing the equivalent hexadecimal value.
+        print("The hexadecimal equivalent of hash is : ", end ="")
+        print(result.hexdigest())
+        resulthex = result.hexdigest()
+        return resulthex
+        
 
-def hash(line):
-    key=(sha.new(line).hexdigest(),16)
-    return key
-    
+    def HashtoID(resulthex):
+        # string type for resulthex
+        i = int(resulthex, 16)
+        i = i%MAX
+        return i
+
+
+    def compareHASH(beforehash1,befrehash2):
+        if beforehash1 == befrehash2:
+            return True
+        else:
+            return False
 
 def id():
     return long(random.uniform(0,2**k))
@@ -169,9 +198,3 @@ def showFinger(node):
     for i in range(k):
         print (str(node.start[i]) +' : ' +str(node.finger[i].id))  
     print ('-----------')
-
-
-
-# todo figure out the readin
-# read in and 
-# generate the hash function(IP and port)

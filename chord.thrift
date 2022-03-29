@@ -1,30 +1,23 @@
-exception SystemException {
-  1: optional string message
+struct NodeRef {
+    1: required string ip;
+    2: required i32 port;
+    3: required i32 nodeId;
 }
 
-
-struct NodeID {
-  1: string id;
-  2: string ip;
-  3: i32 port;
+struct Finger {
+    1: required i32 start;
+    2: required NodeRef node;
 }
 
-service FileStore { 
-  void put(1: RFile rFile)
-    throws (1: SystemException systemException),
-  
-  RFile get(1: string filename)
-    throws (1: SystemException systemException),
-
-  void setFingertable(1: list<NodeID> node_list),
-  
-  NodeID findSucc(1: string key) 
-    throws (1: SystemException systemException),
-
-  NodeID findPred(1: string key) 
-    throws (1: SystemException systemException),
-
-  NodeID getNodeSucc() 
-    throws (1: SystemException systemException),
-
+service ChordService {
+    void insert(1:i32 wordKey, 2:string definition),
+    NodeRef findNode(1:string word),
+    string lookup(1:string word),
+    bool join(1:NodeRef other),
+    void printFingerTable(),
+    NodeRef findSuccessor(1:i32 key),
+    NodeRef findPredecessor(1:i32 key),
+    NodeRef closestPrecedingFinger(1:i32 key),
+    void updatePredecessor(1:NodeRef other),
+    void updateFingerTables(1:NodeRef s, 2:i32 i)
 }
