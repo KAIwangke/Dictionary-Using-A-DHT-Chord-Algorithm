@@ -104,8 +104,9 @@ def main():
 
     print ("finish !!!")
     
-
-
+    server = serve(chord_server, port)
+    stabilize_thread = threading.Thread(target=stabilize)
+    stabilize_thread
 
 if __name__ == "__main__":
 

@@ -3,6 +3,8 @@ from operator import truediv
 import random
 from statistics import mean
 from unittest import result
+import threading
+import time
 
 
 
@@ -78,9 +80,11 @@ class Node:
         print("Change to next node")
         print(self.id)
         n = self.find_predecessor(id)
+        # tracking
         print(n.id)
         k = n.successor()
         print(k.id)                
+        # tracking
         return n.successor()
     
     def closest_preceding_finger(self,id):
@@ -153,6 +157,9 @@ class Node:
         return findingnode.wordlist[word]
     
 
+    # def stabilize():
+    # def UpdateDHT():
+        # Action == def update_others()
 
 
     # def stabilization()
@@ -164,6 +171,92 @@ class Node:
         #     4.2 xp.suc = x
         #     4.3 x.pre = xp
 
+    def stabilize(self):
+        '''
+        The stabilize function is called in repetitively in regular intervals as it is responsible to make sure that each 
+        node is pointing to its correct successor and predecessor nodes. By the help of the stabilize function each node
+        is able to gather information of new nodes joining the ring.
+        '''
+        while True:
+            if self.successor is None:
+                time.sleep(10)
+                continue
+            data = "get_predecessor"
+
+            if self.successor.ip == self.ip  and self.successor.port == self.port:
+                time.sleep(10)
+            result = self.request_handler.send_message(self.successor.ip , self.successor.port , data)
+            if result == "None" or len(result) == 0:
+                self.request_handler.send_message(self.successor.ip , self.successor.port, "notify|"+ str(self.id) + "|" + self.nodeinfo.__str__())
+                continue
+
+            # print("found predecessor of my sucessor", result, self.successor.id)
+            ip , port = self.get_ip_port(result)
+            result = int(self.request_handler.send_message(ip,port,"get_id"))
+            if self.get_backward_distance(result) > self.get_backward_distance(self.successor.id):
+                # print("changing my succ in stablaize", result)
+                self.successor = Node(ip,port)
+                self.finger_table.table[0][1] = self.successor
+            self.request_handler.send_message(self.successor.ip , self.successor.port, "notify|"+ str(self.id) + "|" + self.nodeinfo.__str__())
+            print("===============================================")
+            print("STABILIZING")
+            print("===============================================")
+            print("ID: ", self.id)
+            if self.successor is not None:
+                print("Successor ID: " , self.successor.id)
+            if self.predecessor is not None:
+                print("predecessor ID: " , self.predecessor.id)
+            print("===============================================")
+            print("=============== FINGER TABLE ==================")
+            self.finger_table.print()
+            print("===============================================")
+            print("DATA STORE")
+            print("===============================================")
+            print(str(self.data_store.data))
+            print("===============================================")
+            print("+++++++++++++++ END +++++++++++++++++++++++++++")
+            print()
+            print()
+            print()
+            time.sleep(10)
+
+    def notify(self, node_id , node_ip , node_port):
+        '''
+        Recevies notification from stabilized function when there is change in successor
+        '''
+        if self.predecessor is not None:
+            if self.get_backward_distance(node_id) < self.get_backward_distance(self.predecessor.id):
+                # print("someone notified me")
+                # print("changing my pred", node_id)
+                self.predecessor = Node(node_ip,int(node_port))
+                return
+        if self.predecessor is None or self.predecessor == "None" or ( node_id > self.predecessor.id and node_id < self.id ) or ( self.id == self.predecessor.id and node_id != self.id) :
+            # print("someone notified me")
+            # print("changing my pred", node_id)
+            self.predecessor = Node(node_ip,int(node_port))
+            if self.id == self.successor.id:
+                # print("changing my succ", node_id)
+                self.successor = Node(node_ip,int(node_port))
+                self.finger_table.table[0][1] = self.successor
+        
+    def fix_fingers(self):
+        '''
+        The fix_fingers function is used to correct the finger table at regular interval of time this function waits for
+        10 seconds and then picks one random index of the table and corrects it so that if any new node has joined the 
+        ring it can properly mark that node in its finger table.
+        '''
+        while True:
+
+            random_index = random.randint(1,m-1)
+            finger = self.finger_table.table[random_index][0]
+            # print("in fix fingers , fixing index", random_index)
+            data = self.find_successor(finger)
+            if data == "None":
+                time.sleep(10)
+                continue
+            ip,port = self.get_ip_port(data)
+            self.finger_table.table[random_index][1] = Node(ip,port) 
+            time.sleep(10)
 
 
 class HASHING:
