@@ -83,29 +83,37 @@ There are 4 options a user can do:
 3) To get book title, call getPair(). 
 4) Exit the system For each operation here, user can choose whether or not to print the tracking information
 
-`def connectSuperNode()`
+##### 2.1.1 `def connectSuperNode()`
+
+The function will connect to the supernode using the thrift frame work. Client will connect to the supernode and sends a request to the server via a RPC call using `superNodeAddress`.  The `nodeInfo` will get from the supernode in order to contact to the specific node itself.
+
+##### 2.1.2 `def setFile(fileName, nodeAddress, port)`
+
+Extract first two items, word and meaning, the function will contact the node using the thrift for the client and then use the information to request the `put(word,meaning)` action. Under this action we assume the file include all the information that is given for put action and well documented as `word` & `meaning` in above and after lines
+
+In the interface for the clint this action according to the `add`
 
 
 
+##### 2.1.3 `def setSingleWord(word, meaning, nodeAddress, port)`
 
+Connect with Node using thrift for setting words, this function implement for the user to put single word and meaning adding into the DHT.  The function will contact the node using the thrift for the client and then use the information to request the `put(word,meaning)` action. 
 
-`def setFile(fileName, nodeAddress, port)`
-
-
-
-
-
-`def setSingleWord(word, meaning, nodeAddress, port)`
+In the interface for the clint this action according to the `set`
 
 
 
+##### 2.1.4 `def getWord(word, nodeAddress, port)`
 
+ The function will contact the node using the thrift for the client and then use the information to request the `get(word)` action. If the get meaning is `NA` that means the DHT didn’t include the meaning of the word. Otherwise it will get back the meaning for the user/client.
 
-`def getWord(word, nodeAddress, port)`
+In the interface for the clint this action according to the `get`
 
+==todo==
 
+##### 2.1.5 `def ExitPrint`
 
-
+In the interface for the clint this action according to the `exit and print`
 
 
 
@@ -115,31 +123,97 @@ There are 4 options a user can do:
 
 #### 2.2 SuperNode
 
-SuperNode will maintain the node list of the system knowing all the information of the nodes in the system. The address of super node is well known for all the clients and new nodes. Each new node needs to contact the super node first to get a random node information of the system. Each client will also talk to the super node first to a random node information and do the following information. Super node will guarantee that there will be no concurrent node join and only return node information to clients when the system is ready (the number of nodes equals the configured node number)
+SuperNode will maintain the node list of the system knowing all the information of the nodes in the system.
+
+The address of super node is well known for all the clients and new nodes. Each new node needs to contact the super node first to get a random node information of the system. Each client will also talk to the super node first to a random node information and do the following information. Super node will guarantee that there will be no concurrent node join and only return node information to clients when the system is ready.
+
+##### 2.2.1 `def getPossibleID()`
+
+Generate the random number for the ID for the new node to join.
 
 
 
+ ##### 2.2.2 `def GetNodeForJoin(self, IP, Port)`
 
-
- `def getPossibleID()`
-
-
-
- `def GetNodeForJoin(self, IP, Port)`
+This function maintain the connection with the client, which will return a node information that is randomly chosen and also return the formatted ip and port for the client to contact with.
 
 
 
+##### 2.2.3 `def PostJoin(self, IP, Port, id)`
 
-
-`def PostJoin(self, IP, Port, id)`
-
-
+This function maintain the connection between the supernode itself and the node. Suppose we have the nodeInfo that is `5, 127.0.0.1:54454:12` according to the nodeID, IP and port. After the node finished the joining the DHT, it will send the “DONE”, message to the supernode.
 
 
 
 #### 2.3 Node
 
 Each node will maintain a part of the DHT and maintains a finger table storing partial information of the other nodes in the system to provide “shortcut” to other nodes. We use [ip]:[port] as the string to generate hash code. When a node first joins the system, it will talk to the super node first to get a random node existing in the system. Then the new node will use the existing information to build its own finger table and join the system. Updating the finger tables of other nodes is also the job of the new node. Each node provides multiple services for other nodes and clients to get its own information (finger entries and real data pairs).
+
+
+
+##### 2.3.1 `def decr(value,size):`
+
+
+
+##### 2.3.2`def between(id, start, end):`
+
+
+
+##### 2.3.3 `def closeStart(id, start, end):`
+
+
+
+
+
+class WordList:
+
+ def insert(self, word, meaning):
+
+ def delete(self, word):
+
+ def search(self, word):
+
+
+
+class Node:
+
+ def successor(self):
+
+set the successor for the node as the attribute
+
+ def predecessor(self):
+
+ def findSuccessor(self, id):
+
+ def findPredecessor(self, id):
+
+ def closest_preceding_finger(self, id):
+
+ def join(self):
+
+ def init_finger_table(self, newNodeInfo):
+
+ def update_others(self):
+
+ def update_finger_table(self, s, i):
+
+ def update_others_leave(self):
+
+ def leave(self):
+
+ def setSuccessor(self, succ):
+
+ def setWord(self, word, meaning):
+
+ def Put(self, word, meaning):
+
+ def getWord(self, word):
+
+def ConnectSuperNode(IP, port):
+
+def startNodeServer(id, ip, port):
+
+
 
 
 
