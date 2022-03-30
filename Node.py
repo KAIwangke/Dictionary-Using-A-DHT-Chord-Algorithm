@@ -2,6 +2,7 @@ import numbers
 from operator import truediv
 import random
 from statistics import mean
+from unittest import result
 
 
 
@@ -135,10 +136,20 @@ class Node:
         self.finger[0] = succ
     
     def put(self,word,meaning):
-        self.wordlist[word] = meaning
+        wordID = HASHING.getHashId(word)
+        print(wordID)
+        findingnode = self.find_successor(wordID)
+        findingnode.wordlist[word] = meaning
+
 
     def get(self,word):
-        return self.wordlist[word]
+        wordID = HASHING.getHashId(word)
+        print(wordID)
+        findingnode = self.find_successor(wordID)
+        return findingnode.wordlist[word]
+    
+
+
 
     # def stabilization()
         # 1. node x join and Id is between xp and xs
@@ -164,7 +175,15 @@ class HASHING:
         print(result.hexdigest())
         resulthex = result.hexdigest()
         return resulthex
-        
+    
+    def wordhash_id(string):
+        string = string.encode()
+        result  = hashlib.md5(string.encode())
+        wordresult = result.hexdigest()
+        wordH_id = int(wordresult,16)
+        id = wordH_id % MAX
+        return id
+
 
     def HashtoID(resulthex):
         # string type for resulthex

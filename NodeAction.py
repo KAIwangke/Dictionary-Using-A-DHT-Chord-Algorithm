@@ -1,4 +1,54 @@
 from Node import *
+import hashlib
+
+
+def printNodes(node):
+    print (" Ring nodes:")
+    end = node
+    print (node.id)
+    while end != node.successor():
+        node = node.successor()
+        print (node.id)
+    print ('-----------')
+
+def showFinger(node):
+    print ('Finger table of node ' + str(node.id))
+    print ('start:node')
+    for i in range(k):
+        print (str(node.start[i]) +' : ' +str(node.finger[i].id))  
+    print ('-----------')
+
+# def connection()
+
+
+
+class Hashing:
+    def hash(IP,port):
+        message = IP + port
+        message = message.encode()
+        # then sending to md5()
+        result = hashlib.md5(message)
+        print("this is the result for the md5")
+        print(result)
+        # printing the equivalent hexadecimal value.
+        print("The hexadecimal equivalent of hash is : ", end ="")
+        print(result.hexdigest())
+        resulthex = result.hexdigest()
+        return resulthex
+        
+
+    def HashtoID(resulthex):
+        # string type for resulthex
+        i = int(resulthex, 16)
+        i = i%MAX
+        return i
+
+
+    def compareHASH(beforehash1,befrehash2):
+        if beforehash1 == befrehash2:
+            return True
+        else:
+            return False
 
 
 def main():
@@ -10,26 +60,26 @@ def main():
     IPNode4 = "localhost"
     IPNode5 = "localhost"
 
-    PortNode1 = 4041
-    PortNode2 = 4042
-    PortNode3 = 4043
-    PortNode4 = 4044
-    PortNode5 = 4045
+    PortNode1 = "4041"
+    PortNode2 = "4042"
+    PortNode3 = "4043"
+    PortNode4 = "4044"
+    PortNode5 = "4045"
 
-    H_value1 = HASHING.hash(IPNode1,PortNode1)
-    ID1 = HASHING.HashtoID(H_value1)
+    H_value1 = Hashing.hash(IPNode1,PortNode1)
+    ID1 = Hashing.HashtoID(H_value1)
 
-    H_value2 = HASHING.hash(IPNode2,PortNode2)
-    ID2 = HASHING.HashtoID(H_value2)
+    H_value2 = Hashing.hash(IPNode2,PortNode2)
+    ID2 = Hashing.HashtoID(H_value2)
 
-    H_value3 = HASHING.hash(IPNode3,PortNode3)
-    ID3 = HASHING.HashtoID(H_value3)
+    H_value3 = Hashing.hash(IPNode3,PortNode3)
+    ID3 = Hashing.HashtoID(H_value3)
 
-    H_value4 = HASHING.hash(IPNode4,PortNode4)
-    ID4 = HASHING.HashtoID(H_value4)
+    H_value4 = Hashing.hash(IPNode4,PortNode4)
+    ID4 = Hashing.HashtoID(H_value4)
     
-    H_value5 = HASHING.hash(IPNode5,PortNode5)
-    ID5 = HASHING.HashtoID(H_value5)
+    H_value5 = Hashing.hash(IPNode5,PortNode5)
+    ID5 = Hashing.HashtoID(H_value5)
 
     n1 = Node(ID1)
     n2 = Node(ID2)
