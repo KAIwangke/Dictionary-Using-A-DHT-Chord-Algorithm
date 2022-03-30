@@ -72,7 +72,7 @@ class Node:
         return n.successor()
     
     def find_successor(self,id):  
-        if betweenE(id,self.predecessor.id,self.id):
+        if pos.betweenE(id,self.predecessor.id,self.id):
             print("I'm the finding node")
             return self
         print("Change to next node")
