@@ -71,13 +71,17 @@ class Node:
         n = self.find_predecessor(id)
         return n.successor()
     
-    def find_predecessor(self,id):
-        if id == self.id:
-            return self.predecessor
-        n1 = self
-        while not pos.atEND(id,n1.id,n1.successor().id):
-            n1 = n1.closest_preceding_finger(id)
-        return n1
+    def find_successor(self,id):  
+        if betweenE(id,self.predecessor.id,self.id):
+            print("I'm the finding node")
+            return self
+        print("Change to next node")
+        print(self.id)
+        n = self.find_predecessor(id)
+        print(n.id)
+        k = n.successor()
+        print(k.id)                
+        return n.successor()
     
     def closest_preceding_finger(self,id):
         for i in range(k-1,-1,-1):
