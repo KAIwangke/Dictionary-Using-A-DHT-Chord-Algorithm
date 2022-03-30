@@ -67,11 +67,6 @@ class Node:
     def successor(self):
         return self.finger[0]
     
-    def find_successor(self,id):  
-        if pos.atEND(id,self.predecessor.id,self.id):
-            return self
-        n = self.find_predecessor(id)
-        return n.successor()
     
     def find_successor(self,id):  
         if pos.betweenE(id,self.predecessor.id,self.id):
@@ -86,7 +81,16 @@ class Node:
         print(k.id)                
         # tracking
         return n.successor()
-    
+
+    def find_predecessor(self,id):
+        if id == self.id:
+            return self.predecessor
+        n1 = self
+        while not pos.betweenE(id,n1.id,n1.successor().id):
+            # connnect to the n1.ip n1.port
+            n1 = n1.closest_preceding_finger(id)
+
+        return n1
     def closest_preceding_finger(self,id):
         for i in range(k-1,-1,-1):
             if pos.between(self.finger[i].id,self.id,id):
