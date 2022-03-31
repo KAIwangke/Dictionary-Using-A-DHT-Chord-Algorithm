@@ -151,67 +151,73 @@ Each node will maintain a part of the DHT and maintains a finger table storing p
 
 
 
-##### 2.3.1 `def decr(value,size):`
+Assume MAX = 2^bits
 
 
 
-##### 2.3.2`def between(id, start, end):`
+##### 2.3.1 `Helper Functions for the Position`
 
 
 
-##### 2.3.3 `def closeStart(id, start, end):`
+​	`def decr()` In order to find the distance between the target node and the currrent node. if the value is bigger than the max size for the chord, then there should be the modular operation in order to find the correspingding position for the node. `(size<=value)? return value-size :return MAX-(size-value)`
+
+​	`def between()`	to check if the id is in the interval [start, end]. Edge case is if the node is the first node hence the start should be the end and return true. Else check the relation for the `start < id < end` , brefore heading to the comparison, we need to make sure all the index is inside the interval of the 0 and max.
+
+​	`def closeStart()` to check the init belongs to the interval of [start,end)
+
+​	`def closeEnd()` to check the init belongs to the interval of (start,end]
+
+​	
+
+##### 2.3.2 `class WordList` 
+
+` def insert(self, word, meaning)` The insert functon will insert the meaning into the wordlist
+
+` def delete(self, word) ` The delet function will pop out the word in the dictionary
+
+` def search(self, word)` The search function will search for the word in the list
 
 
 
+##### 2.3.4`class Node:`
 
-
-class WordList:
-
- def insert(self, word, meaning):
-
- def delete(self, word):
-
- def search(self, word):
+Assume the Node class has init the attribute for the self {id,ip,port,nodeInfo(ip,port),finger, start,wordlist,predecessor,successor,traceInfo}
 
 
 
-class Node:
+ 	`def successor(self)` set the successor for the node as the attribute
 
- def successor(self):
+​	 ` 	def predecessor(self)` set the predecessor for the node as attribute
 
-set the successor for the node as the attribute
+ 	`def findSuccessor(self, id)` Ask the node self to find id’s successor and return NodeInfo,  if the id is in the between [self.pred.id, self.id]. if current one is not in the interval of the id then it should return th predecessor’s nodeInfo. All the process assume the ip and the port can be access by the node and contactable for the current node while connecting using the thrift.
 
- def predecessor(self):
+ 	`def findPredecessor(self, id)` Ask the node self to find the id’s predecessor and return NodeInfo, while Id is not belong to the (current, current.successor) then it should update the current node and keep finding. All the process assume the ip and the port can be access by the node and contactable for the current node while connecting using the thrift.
 
- def findSuccessor(self, id):
+ 	`def closest_preceding_finger(self, id)` The function will return the closest finger preceding id and return the nodeInfo using the chord algorithm.
 
- def findPredecessor(self, id):
+ 	`def join(self)` Join into the network for the arbitrary node and initial the finger table also updates all the other one’s fingertable.
 
- def closest_preceding_finger(self, id):
+ 	`def init_finger_table(self, newNodeInfo)`: initialize finger table of local node, connect with new Node to find its successor, connect to the pred via thrift to get its successor. 
 
- def join(self):
+ 	`def update_others(self)`
 
- def init_finger_table(self, newNodeInfo):
+ 	`def update_finger_table(self, s, i)`
 
- def update_others(self):
+ 	`def update_others_leave(self)`
 
- def update_finger_table(self, s, i):
+ 	`def leave(self)`
 
- def update_others_leave(self):
+ 	`def setSuccessor(self, succ)`
 
- def leave(self):
+ 	`def setWord(self, word, meaning)`
 
- def setSuccessor(self, succ):
+ 	`def Put(self, word, meaning)`
 
- def setWord(self, word, meaning):
+ 	`def getWord(self, word)`
 
- def Put(self, word, meaning):
+​	`def ConnectSuperNode(IP, port)`
 
- def getWord(self, word):
-
-def ConnectSuperNode(IP, port):
-
-def startNodeServer(id, ip, port):
+​	`def startNodeServer(id, ip, port)`
 
 
 
@@ -228,23 +234,24 @@ def startNodeServer(id, ip, port):
 ```
 cd Dictionary-Using-A-DHT-Chord-Algorithm
 
+thrift -gen py Node.thrift
+thrift -gen py SuperNode.thrift
 ```
 
+#### 3.2 Run
 
+```python
+python3 client.py
+python3 SuperNode.py
 
+python3 Nodes.py <Port1> <IP> <number of bits>
+python3 Nodes.py <Port2> <IP> <number of bits>
+python3 Nodes.py <Port3> <IP> <number of bits>
+python3 Nodes.py <Port4> <IP> <number of bits>
+python3 Nodes.py <Port5> <IP> <number of bits>
+```
 
-
-
-
-## 4. Testing Description
-
-
-
-
-
-
-
-
+Assume we have 5 nodes for the supernode in the chord.
 
 
 
