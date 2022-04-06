@@ -17,7 +17,7 @@ from thrift.protocol import TBinaryProtocol
 
 # connect with the supernode to get the node information
 def connectSuperNode():
-  superNodeAddress = 'kh4250-05.cselabs.umn.edu'
+  superNodeAddress = 'localhost'
   port = 9091
   transport = TSocket.TSocket(superNodeAddress, port)
 
